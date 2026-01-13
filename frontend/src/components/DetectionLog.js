@@ -5,21 +5,33 @@ export default function DetectionLog() {
   const [logs, setLogs] = useState([]);
   const [latestItem, setLatestItem] = useState(null);
 
-  useEffect(() => {
-    const fetchLogs = async () => {
-      try {
-        // Fetch raw history from database
-        const response = await axios.get("http://localhost:5050/detections/latest?limit=10");
-        const data = response.data;
-        setLogs(data);
-        if (data.length > 0) {
-          setLatestItem(data[0]);
-        }
-      } catch (err) {
-        console.error("Error fetching logs", err);
+  const fetchLogs = async () => {
+    try {
+      const response = await axios.get("http://localhost:5050/detections/latest?limit=10");
+      const data = response.data;
+      setLogs(data);
+      if (data.length > 0) {
+        setLatestItem(data[0]);
+      } else {
+        setLatestItem(null);
       }
-    };
+    } catch (err) {
+      console.error("Error fetching logs", err);
+    }
+  };
 
+  const handleReset = async () => {
+    if (window.confirm("Are you sure you want to clear all history for this demo?")) {
+      try {
+        await axios.post("http://localhost:5050/admin/reset");
+        fetchLogs(); // refresh immediately
+      } catch (e) {
+        alert("Failed to reset");
+      }
+    }
+  };
+
+  useEffect(() => {
     fetchLogs();
     const interval = setInterval(fetchLogs, 1500); // Poll every 1.5s
     return () => clearInterval(interval);
@@ -41,7 +53,12 @@ export default function DetectionLog() {
       )}
 
       <div className="log-list-container">
-        <h4>Recent Activity</h4>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h4>Recent Activity</h4>
+          <button onClick={handleReset} className="reset-btn" style={{ padding: '5px 10px', fontSize: '0.8em', backgroundColor: '#e53935' }}>
+            Reset Demo
+          </button>
+        </div>
         <ul className="log-list">
           {logs.map((log, idx) => (
             <li key={idx} className={idx === 0 ? "log-item latest" : "log-item"}>

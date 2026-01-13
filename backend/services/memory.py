@@ -53,6 +53,22 @@ def log_detection(label, confidence, source="webcam"):
     conn.commit()
     conn.close()
 
+def clear_logs():
+    """
+    Clear all logs from the database for demo reset.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute("DELETE FROM detections")
+    c.execute("DELETE FROM sensors")
+    try:
+        c.execute("DELETE FROM sqlite_sequence WHERE name='detections'")
+        c.execute("DELETE FROM sqlite_sequence WHERE name='sensors'")
+    except:
+        pass
+    conn.commit()
+    conn.close()
+
 def get_latest_sensors():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row

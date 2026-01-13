@@ -2,7 +2,7 @@ from flask import Blueprint, Response, jsonify, request
 from api.vision import gen_frames, get_latest_detections_display, predict_image_file
 from api.sensors import get_sensor_data
 from api.chatbot import get_chat_response
-from services.memory import get_recent_detections, get_detections_summary
+from services.memory import get_recent_detections, get_detections_summary, clear_logs
 
 # Create a Blueprint for the API routes
 api_bp = Blueprint('api', __name__)
@@ -60,5 +60,14 @@ def predict_image():
     try:
         detections = predict_image_file(file)
         return jsonify(detections)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@api_bp.route('/admin/reset', methods=['POST'])
+def reset_demo():
+    """Clear all data for a clean demo start."""
+    try:
+        clear_logs()
+        return jsonify({"status": "success", "message": "Demo data cleared."})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
