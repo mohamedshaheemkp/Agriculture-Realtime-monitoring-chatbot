@@ -11,17 +11,17 @@ def get_chat_response(message):
     sensors = get_latest_sensors()
     # Get last 5 detections for immediate context
     recent_detections = get_recent_detections(limit=5)
-    # Get summary for broader "what's happening" context
-    summary = get_detections_summary(seconds=120) 
+    # Get summary for broader "what's happening" context (last 5 mins)
+    summary = get_detections_summary(seconds=300) 
     
     analysis = analyze_state(sensors, recent_detections)
     
     response = ""
     
-    # 2. Simple Intent Matching (Rule-based Chatbot)
+    # 2. Intent Matching
     
+    # A. "Status" or "Report"
     if "status" in message or "report" in message or "how is" in message:
-        # User asks for general status
         found_issues = False
         if analysis['alerts']:
             response += "ATTENTION: " + " ".join(analysis['alerts']) + "\n"
@@ -31,32 +31,38 @@ def get_chat_response(message):
             response += f"Temp: {sensors['temperature']}, Humidity: {sensors['humidity']}. "
             
         if summary['most_frequent']:
-             response += f"I have frequently detected {summary['most_frequent']} ({summary['count']} times) in the last 2 minutes. "
+             response += f"Frequent detection: {summary['most_frequent']} (seen {summary['count']} times in last 5m). "
         elif not found_issues:
              response += "Conditions look stable."
 
+    # B. "Advice" or "Help"
     elif "advice" in message or "what should i do" in message or "help" in message:
-        # User looking for recommendations
         if analysis['advice']:
             response += "Recommendations: " + " ".join(analysis['advice'])
         else:
             response += "Everything looks fine. Keep monitoring soil moisture."
             
-    elif "last" in message and ("detect" in message or "seen" in message or "disease" in message):
-        # "What did I just show?" or "Last detected disease?"
+    # C. "What did I just show?" (Latest detection)
+    elif "just now" in message or "last" in message or "what did i show" in message or "what is this" in message:
         if recent_detections:
             latest = recent_detections[0]
-            # Convert timestamp to something readable or just say "Most recently"
-            response += f"The last thing I detected was **{latest['label']}** ({int(latest['confidence']*100)}% confidence)."
+            # Convert timestamp (optional, or just say 'Just now')
+            response += f"I just detected **{latest['label']}** with {int(latest['confidence']*100)}% confidence."
+            if latest['source'] == 'upload':
+                response += " (from uploaded image)."
         else:
             response += "I haven't detected anything recently."
 
-    elif "history" in message or "summary" in message:
+    # D. "How many times?" (Frequency / Summary)
+    elif "how many" in message or "count" in message or "times" in message:
          if summary['most_frequent']:
-             response += f"In the last few minutes, the most common detection was {summary['most_frequent']} (seen {summary['count']} times)."
+             response += f"In the last 5 minutes, I saw {summary['most_frequent']} {summary['count']} times."
+             if summary['total_detections'] > summary['count']:
+                 response += f" Total detections: {summary['total_detections']}."
          else:
-             response += "No significant detections in history log."
+             response += "I haven't detected any diseases or pests in the last 5 minutes."
 
+    # E. Specific queries
     elif "temperature" in message:
         if sensors:
              response += f"Temperature is currently {sensors['temperature']}."
@@ -68,6 +74,6 @@ def get_chat_response(message):
 
     else:
         # Fallback / Greeting
-        response += "I'm your Agri-Assistant. Ask me 'What did you see?' or 'Status report'."
+        response += "I'm your Agri-Assistant. Ask me 'What did you see just now?', 'Status report', or 'Any alerts?'."
 
     return response
