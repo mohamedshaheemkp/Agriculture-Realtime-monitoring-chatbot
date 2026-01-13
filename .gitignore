@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# System
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Backend specific (if any extra)
+instance/
+.pytest_cache/
+
+# Build outputs
+dist/
+build/
+
+# Dataset and Runs
+backend/dataset/
+backend/runs/
