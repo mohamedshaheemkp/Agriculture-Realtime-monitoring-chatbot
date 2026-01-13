@@ -11,6 +11,7 @@ latest_detections = []
 # Logging State
 last_logged_time = {} # Key: label, Value: timestamp
 LOG_COOLDOWN = 2.0 # Seconds
+ROLLING_HISTORY = [] # Maintain rolling history of detections
 
 MODEL_PATH = os.environ.get("MODEL_PATH", "models/best.pt")
 # Fallback logic
@@ -30,13 +31,32 @@ cap = cv2.VideoCapture(0)
 def should_log(label):
     """
     Check if we should log this label (limit frequency).
+    Log if it is new or after cooldown.
     """
     now = time.time()
     last = last_logged_time.get(label, 0)
-    if (now - last) > LOG_COOLDOWN:
+    
+    # Log if it's the first time seeing this label or if cooldown has passed
+    if last == 0 or (now - last) > LOG_COOLDOWN:
         last_logged_time[label] = now
         return True
     return False
+
+def update_rolling_history(label, conf):
+    """
+    Maintain rolling history of detections.
+    Keep last 20 detections.
+    """
+    global ROLLING_HISTORY
+    timestamp = time.strftime("%H:%M:%S", time.localtime())
+    detection = {
+        "label": label,
+        "confidence": conf,
+        "timestamp": timestamp
+    }
+    ROLLING_HISTORY.append(detection)
+    if len(ROLLING_HISTORY) > 20:
+        ROLLING_HISTORY.pop(0)
 
 def predict_on_frame(frame, source="webcam"):
     """
@@ -53,10 +73,12 @@ def predict_on_frame(frame, source="webcam"):
         # Helper to process result item
         def process_det(label, conf):
             detections.append({"label": label, "confidence": conf})
+            
             # Log Detection with Deduplication Logic
             if should_log(label):
                 # print(f"Logging {label} from {source}")
                 log_detection(label, conf, source)
+                update_rolling_history(label, conf)
 
         # 1. Object Detection (Boxes)
         if hasattr(results[0], 'boxes') and results[0].boxes is not None:
@@ -132,3 +154,6 @@ def gen_frames():
 
 def get_latest_detections_display():
     return latest_detections
+
+def get_rolling_history():
+    return ROLLING_HISTORY
