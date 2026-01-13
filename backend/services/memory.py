@@ -1,6 +1,6 @@
 import sqlite3
-import json
 import time
+from collections import Counter
 
 DB_PATH = "agri.db"
 
@@ -15,31 +15,41 @@ def init_db():
                   humidity REAL,
                   soil_moisture REAL)''')
     
-    # Table for detections
+    # Table for detections with source column
+    # If table exists from previous version, we might need to migrate
+    # For now, we'll try to create it with the new schema. 
+    # If it exists, we will try to add the column (ignoring error if it exists)
     c.execute('''CREATE TABLE IF NOT EXISTS detections
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   timestamp REAL,
                   label TEXT,
-                  confidence REAL)''')
+                  confidence REAL,
+                  source TEXT DEFAULT 'webcam')''')
+    
+    try:
+        c.execute("ALTER TABLE detections ADD COLUMN source TEXT DEFAULT 'webcam'")
+    except sqlite3.OperationalError:
+        pass # Column likely already exists
+        
     conn.commit()
     conn.close()
 
 def log_sensor_data(data):
-    """
-    data: dict {temperature, humidity, soil_moisture}
-    """
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("INSERT INTO sensors (timestamp, temperature, humidity, soil_moisture) VALUES (?, ?, ?, ?)",
-              (time.time(), data.get('temperature', 0).replace('°C',''), data.get('humidity', 0).replace('%',''), data.get('soil_moisture', 0).replace('%','')))
+              (time.time(), 
+               data.get('temperature', 0).replace('°C',''), 
+               data.get('humidity', 0).replace('%',''), 
+               data.get('soil_moisture', 0).replace('%','')))
     conn.commit()
     conn.close()
 
-def log_detection(label, confidence):
+def log_detection(label, confidence, source="webcam"):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    c.execute("INSERT INTO detections (timestamp, label, confidence) VALUES (?, ?, ?)",
-              (time.time(), label, confidence))
+    c.execute("INSERT INTO detections (timestamp, label, confidence, source) VALUES (?, ?, ?, ?)",
+              (time.time(), label, confidence, source))
     conn.commit()
     conn.close()
 
@@ -63,5 +73,38 @@ def get_recent_detections(limit=5):
     conn.close()
     return [dict(r) for r in rows]
 
-# Initialize on module load (or call explicitly)
+def get_detections_summary(seconds=60):
+    """
+    Get summary of detections in the last N seconds.
+    Returns: { 'most_frequent': 'Blight', 'count': 5, 'last_seen': 'Blight' }
+    """
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    
+    cutoff = time.time() - seconds
+    c.execute("SELECT label, timestamp FROM detections WHERE timestamp > ? ORDER BY id DESC", (cutoff,))
+    rows = c.fetchall()
+    conn.close()
+    
+    if not rows:
+        return {"most_frequent": None, "count": 0, "last_seen": None}
+        
+    labels = [r['label'] for r in rows]
+    last_seen = labels[0]
+    
+    if not labels:
+        return {"most_frequent": None, "count": 0, "last_seen": None}
+        
+    counter = Counter(labels)
+    most_common = counter.most_common(1)[0]
+    
+    return {
+        "most_frequent": most_common[0],
+        "count": most_common[1],
+        "last_seen": last_seen,
+        "total_detections": len(labels)
+    }
+
+# Initialize on module load
 init_db()

@@ -1,7 +1,8 @@
 from flask import Blueprint, Response, jsonify, request
-from api.vision import gen_frames, get_latest_detections, predict_image_file
+from api.vision import gen_frames, get_latest_detections_display, predict_image_file
 from api.sensors import get_sensor_data
 from api.chatbot import get_chat_response
+from services.memory import get_recent_detections, get_detections_summary
 
 # Create a Blueprint for the API routes
 api_bp = Blueprint('api', __name__)
@@ -13,8 +14,25 @@ def video_feed():
 
 @api_bp.route('/logs')
 def logs():
-    """Endpoint for latest detection logs."""
-    return jsonify(get_latest_detections())
+    """Endpoint for realtime display logs (current frame)."""
+    return jsonify(get_latest_detections_display())
+
+@api_bp.route('/detections/latest')
+def logs_latest():
+    """Get the most recent logged detections from DB."""
+    limit = request.args.get('limit', 5)
+    return jsonify(get_recent_detections(limit=int(limit)))
+
+@api_bp.route('/detections/history')
+def logs_history():
+    """Alias for history."""
+    return jsonify(get_recent_detections(limit=20))
+
+@api_bp.route('/detections/summary')
+def logs_summary():
+    """Get summary of recent activity."""
+    seconds = request.args.get('seconds', 60)
+    return jsonify(get_detections_summary(seconds=int(seconds)))
 
 @api_bp.route('/sensors')
 def sensors():

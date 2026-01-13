@@ -1,4 +1,4 @@
-from services.memory import get_latest_sensors, get_recent_detections
+from services.memory import get_latest_sensors, get_recent_detections, get_detections_summary
 from services.rules import analyze_state
 
 def get_chat_response(message):
@@ -9,8 +9,12 @@ def get_chat_response(message):
     
     # 1. Fetch Context
     sensors = get_latest_sensors()
-    detections = get_recent_detections(limit=3)
-    analysis = analyze_state(sensors, detections)
+    # Get last 5 detections for immediate context
+    recent_detections = get_recent_detections(limit=5)
+    # Get summary for broader "what's happening" context
+    summary = get_detections_summary(seconds=120) 
+    
+    analysis = analyze_state(sensors, recent_detections)
     
     response = ""
     
@@ -18,43 +22,52 @@ def get_chat_response(message):
     
     if "status" in message or "report" in message or "how is" in message:
         # User asks for general status
+        found_issues = False
         if analysis['alerts']:
-            response += "ATTENTION NEEDED: " + " ".join(analysis['alerts']) + "\n"
-        else:
-            response += "Everything looks stable. "
-            
+            response += "ATTENTION: " + " ".join(analysis['alerts']) + "\n"
+            found_issues = True
+        
         if sensors:
-            response += f"Current temperature is {sensors['temperature']}°C and humidity is {sensors['humidity']}%. "
+            response += f"Temp: {sensors['temperature']}, Humidity: {sensors['humidity']}. "
             
-        if detections:
-            labels = [d['label'] for d in detections]
-            response += f"Recently detected: {', '.join(set(labels))}."
-        else:
-            response += "No pests or diseases detected recently."
-            
-    elif "advice" in message or "what do" in message or "help" in message:
+        if summary['most_frequent']:
+             response += f"I have frequently detected {summary['most_frequent']} ({summary['count']} times) in the last 2 minutes. "
+        elif not found_issues:
+             response += "Conditions look stable."
+
+    elif "advice" in message or "what should i do" in message or "help" in message:
         # User looking for recommendations
         if analysis['advice']:
             response += "Recommendations: " + " ".join(analysis['advice'])
         else:
-            response += "Conditions are optimal. Just ensure regular watering schedules."
+            response += "Everything looks fine. Keep monitoring soil moisture."
             
+    elif "last" in message and ("detect" in message or "seen" in message or "disease" in message):
+        # "What did I just show?" or "Last detected disease?"
+        if recent_detections:
+            latest = recent_detections[0]
+            # Convert timestamp to something readable or just say "Most recently"
+            response += f"The last thing I detected was **{latest['label']}** ({int(latest['confidence']*100)}% confidence)."
+        else:
+            response += "I haven't detected anything recently."
+
+    elif "history" in message or "summary" in message:
+         if summary['most_frequent']:
+             response += f"In the last few minutes, the most common detection was {summary['most_frequent']} (seen {summary['count']} times)."
+         else:
+             response += "No significant detections in history log."
+
     elif "temperature" in message:
         if sensors:
-             response += f"Temperature is currently {sensors['temperature']}°C."
+             response += f"Temperature is currently {sensors['temperature']}."
         else:
              response += "No sensor data available right now."
              
-    elif "pest" in message or "disease" in message:
-        if detections:
-            latest = detections[0]
-            response += f"I spotted a {latest['label']} recently ({int(latest['confidence']*100)}% confidence). "
-            response += "Check the 'Advice' tab for treatment options."
-        else:
-            response += "I haven't seen any pests or diseases lately."
-            
+    elif "monitor" in message:
+        response += "I am monitoring the live feed. Show me a leaf and I will tell you if it's healthy."
+
     else:
         # Fallback / Greeting
-        response += "I am your Agri-Assistant. You can ask me for a 'status report', 'advice', or specific sensor readings like 'temperature'."
+        response += "I'm your Agri-Assistant. Ask me 'What did you see?' or 'Status report'."
 
     return response

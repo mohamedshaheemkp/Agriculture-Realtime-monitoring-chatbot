@@ -2,10 +2,15 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 import os
+import time
 from services.memory import log_detection
 
-# Global variable to store latest detections for the video feed overlay
+# Global variable for web view
 latest_detections = []
+
+# Logging State
+last_logged_time = {} # Key: label, Value: timestamp
+LOG_COOLDOWN = 2.0 # Seconds
 
 MODEL_PATH = os.environ.get("MODEL_PATH", "models/best.pt")
 # Fallback logic
@@ -22,7 +27,18 @@ except Exception as e:
 # Open the default webcam
 cap = cv2.VideoCapture(0)
 
-def predict_on_frame(frame):
+def should_log(label):
+    """
+    Check if we should log this label (limit frequency).
+    """
+    now = time.time()
+    last = last_logged_time.get(label, 0)
+    if (now - last) > LOG_COOLDOWN:
+        last_logged_time[label] = now
+        return True
+    return False
+
+def predict_on_frame(frame, source="webcam"):
     """
     Run inference on a single frame (numpy array).
     Returns: annotated_frame, detection_list
@@ -34,16 +50,21 @@ def predict_on_frame(frame):
         results = model.predict(frame, verbose=False, conf=0.5)
         annotated_frame = results[0].plot()
         
-        # Extract Results
+        # Helper to process result item
+        def process_det(label, conf):
+            detections.append({"label": label, "confidence": conf})
+            # Log Detection with Deduplication Logic
+            if should_log(label):
+                # print(f"Logging {label} from {source}")
+                log_detection(label, conf, source)
+
         # 1. Object Detection (Boxes)
         if hasattr(results[0], 'boxes') and results[0].boxes is not None:
             for box in results[0].boxes:
                 conf = float(box.conf[0])
                 cls_id = int(box.cls[0])
                 class_name = results[0].names[cls_id]
-                detections.append({"label": class_name, "confidence": conf})
-                # Log to DB
-                log_detection(class_name, conf)
+                process_det(class_name, conf)
 
         # 2. Classification (Probs)
         elif hasattr(results[0], 'probs') and results[0].probs is not None:
@@ -51,9 +72,7 @@ def predict_on_frame(frame):
              top1_conf = float(results[0].probs.top1conf)
              if top1_conf > 0.5:
                  class_name = results[0].names[top1_index]
-                 detections.append({"label": class_name, "confidence": top1_conf})
-                 # Log to DB
-                 log_detection(class_name, top1_conf)
+                 process_det(class_name, top1_conf)
     
     return annotated_frame, detections
 
@@ -61,14 +80,23 @@ def predict_image_file(file_stream):
     """
     Process an uploaded image file.
     """
-    # Convert string data to numpy array
     npimg = np.frombuffer(file_stream.read(), np.uint8)
-    # Convert numpy array to image
     frame = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
     
     valid_detections = []
     if frame is not None:
-        _, valid_detections = predict_on_frame(frame)
+        # For uploads, we might want to force log (or use same debounce).
+        # Let's say uploads always log because it's a deliberate user action.
+        # But predict_on_frame handles logging. We can bypass debounce by
+        # clearing cache or just passing source="upload" and handling it?
+        # For simplicity, we stick to the same debounce or we can clear:
+        # last_logged_time.clear() # Optional: clear debounce for uploads
+        
+        # Actually, for uploads, we probably want to log every single time.
+        # Let's modify predict_on_frame slightly or just clear cache for specific items?
+        # easier: just run it. The debounce is per-label. 
+        # If user uploads same image twice in 2s, maybe satisfying to not log twice.
+        _, valid_detections = predict_on_frame(frame, source="upload")
         
     return valid_detections
 
@@ -78,15 +106,13 @@ def gen_frames():
         try:
             success, frame = cap.read()
             if not success:
-                # If cam fails/is missing, create a black frame to keep stream alive
-                # time.sleep(0.1)
-                # continue
                 frame = np.zeros((480, 640, 3), dtype=np.uint8)
                 cv2.putText(frame, "No Camera", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             
-            annotated_frame, detections = predict_on_frame(frame)
+            # This is the LIVE WEBCAM loop
+            annotated_frame, detections = predict_on_frame(frame, source="webcam")
             
-            # Update global state for /logs endpoint (if used directly)
+            # Update global state for /logs endpoint
             current_probs = []
             for d in detections:
                 current_probs.append(f"Detected: {d['label']} ({d['confidence']:.2f})")
@@ -104,5 +130,5 @@ def gen_frames():
             print(f"Error in gen_frames: {e}")
             break
 
-def get_latest_detections():
+def get_latest_detections_display():
     return latest_detections
