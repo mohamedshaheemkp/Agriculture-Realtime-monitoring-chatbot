@@ -5,13 +5,27 @@ import os
 import time
 from services.memory import log_detection
 
+import csv
+import json
+import datetime
+
 # Global variable for web view
 latest_detections = []
 
 # Logging State
 last_logged_time = {} # Key: label, Value: timestamp
-LOG_COOLDOWN = 2.0 # Seconds
+LOG_COOLDOWN = 1.0 # Reduced cooldown for better tracking
 ROLLING_HISTORY = [] # Maintain rolling history of detections
+FRAME_COUNT = 0 # Global frame counter
+LOG_FILE_CSV = "detections_log.csv"
+LOG_FILE_JSON = "detections_log.json"
+
+# Initialize CSV header if file doesn't exist
+if not os.path.exists(LOG_FILE_CSV):
+    with open(LOG_FILE_CSV, mode='w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Frame", "Timestamp", "Plant", "Disease", "Confidence", "Source"])
+
 
 MODEL_PATH = os.environ.get("MODEL_PATH", "models/best.pt")
 # Fallback logic
@@ -72,13 +86,35 @@ def predict_on_frame(frame, source="webcam"):
         
         # Helper to process result item
         def process_det(label, conf):
-            detections.append({"label": label, "confidence": conf})
+            # Parse Label (Format: Plant_Disease or just Disease)
+            parts = label.split('_', 1)
+            if len(parts) > 1:
+                plant_name = parts[0]
+                disease_name = parts[1].replace('_', ' ')
+            else:
+                plant_name = "Unknown"
+                disease_name = label
+
+            display_label = f"{plant_name}: {disease_name}"
+            detections.append({"label": display_label, "confidence": conf})
             
-            # Log Detection with Deduplication Logic
+            # Real-time Logging (CSV & JSON)
+            # Log every valid detection? Or just debounced ones?
+            # User requirement: "logs detected diseases with... Frame number"
+            # It's better to log EVERYTHING to file for dataset gathering, 
+            # but debounce the DB/Chatbot updates to avoid spam.
+            
+            timestamp = datetime.datetime.now().isoformat()
+            
+            # 1. File Logging (Detailed)
+            with open(LOG_FILE_CSV, mode='a', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow([FRAME_COUNT, timestamp, plant_name, disease_name, f"{conf:.4f}", source])
+            
+            # 2. Database/Memory Logging (Debounced for UX)
             if should_log(label):
-                # print(f"Logging {label} from {source}")
-                log_detection(label, conf, source)
-                update_rolling_history(label, conf)
+                log_detection(display_label, conf, source)
+                update_rolling_history(display_label, conf)
 
         # 1. Object Detection (Boxes)
         if hasattr(results[0], 'boxes') and results[0].boxes is not None:
@@ -132,6 +168,8 @@ def gen_frames():
                 cv2.putText(frame, "No Camera", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             
             # This is the LIVE WEBCAM loop
+            global FRAME_COUNT
+            FRAME_COUNT += 1
             annotated_frame, detections = predict_on_frame(frame, source="webcam")
             
             # Update global state for /logs endpoint

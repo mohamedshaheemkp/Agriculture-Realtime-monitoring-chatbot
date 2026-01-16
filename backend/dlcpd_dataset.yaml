@@ -1,0 +1,39 @@
+# DLCPD-25 Dataset Configuration for YOLOv8
+# Update the paths to match your local directory structure
+
+path: dataset/dlcpd_25  # dataset root dir
+train: images/train  # train images (relative to 'path')
+val: images/val  # val images (relative to 'path')
+test:  # test images (optional)
+
+# Classes
+# Note: These are placeholder names. You must replace them with the actual class names from DLCPD-25.
+# For DLCPD-25, classes are typically named like "PlantName_DiseaseName"
+names:
+  0: Apple_Scab
+  1: Apple_Black_Rot
+  2: Apple_Cedar_Rust
+  3: Apple_Healthy
+  4: Grape_Black_Rot
+  5: Grape_Esca
+  6: Grape_Leaf_Blight
+  7: Grape_Healthy
+  8: Corn_Common_Rust
+  9: Corn_Gray_Leaf_Spot
+  10: Corn_Healthy
+  11: Potato_Early_Blight
+  12: Potato_Late_Blight
+  13: Potato_Healthy
+  14: Tomato_Bacterial_Spot
+  15: Tomato_Early_Blight
+  16: Tomato_Late_Blight
+  17: Tomato_Leaf_Mold
+  18: Tomato_Septoria_Leaf_Spot
+  19: Tomato_Spider_Mites
+  20: Tomato_Target_Spot
+  21: Tomato_Mosaic_Virus
+  22: Tomato_Yellow_Leaf_Curl_Virus
+  23: Tomato_Healthy
+  24: Pepper_Bacterial_Spot
+  25: Pepper_Healthy
+  # Add other classes as present in your specific extract of DLCPD-25
