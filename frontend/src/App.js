@@ -1,7 +1,7 @@
 import React from "react";
 import Dashboard from "./components/Dashboard";
 import Chatbot from "./components/Chatbot";
-import UploadImage from "./components/UploadImage";
+import UploadImage from "./features/vision/UploadImage";
 import './App.css';
 
 function App() {

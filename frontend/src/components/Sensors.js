@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../config";
 
 export default function Sensors() {
   const [data, setData] = useState({});
@@ -7,7 +8,7 @@ export default function Sensors() {
   useEffect(() => {
     const fetchSensors = async () => {
       try {
-        const response = await axios.get("http://localhost:5050/sensors");
+        const response = await axios.get(`${API_URL}/sensors`);
         setData(response.data);
       } catch (err) {
         console.error(err);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 const Chatbot = () => {
     const [messages, setMessages] = useState([]);
@@ -12,7 +13,7 @@ const Chatbot = () => {
         setMessages([...messages, userMsg]);
 
         try {
-            const res = await axios.post('http://localhost:5050/chat', { message: input });
+            const res = await axios.post(`${API_URL}/chat`, { message: input });
             const botMsg = { sender: 'bot', text: res.data.response };
             setMessages(prev => [...prev, botMsg]);
         } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../config";
 
 export default function VideoFeed() {
   const [currentDisplay, setCurrentDisplay] = useState([]);
@@ -8,7 +9,7 @@ export default function VideoFeed() {
     // Poll for the "current frame" detection (for immediate overlay feedback separate from logs)
     const fetchCurrent = async () => {
       try {
-        const res = await axios.get("http://localhost:5050/logs");
+        const res = await axios.get(`${API_URL}/logs`);
         setCurrentDisplay(res.data);
       } catch (e) { console.error(e); }
     };
@@ -22,7 +23,7 @@ export default function VideoFeed() {
       <h2>Live Webcam Feed</h2>
       <div className="video-wrapper">
         <img
-          src="http://localhost:5050/video_feed"
+          src={`${API_URL}/video_feed`}
           alt="Live feed"
           className="video-stream"
         />

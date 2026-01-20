@@ -2,8 +2,6 @@ def analyze_state(sensor_data, detections):
     """
     Analyze current sensor data and recent detections to generate structured advice/alerts.
     """
-    alerts = []
-    advice = []
     
     # Structure for return
     result = {
