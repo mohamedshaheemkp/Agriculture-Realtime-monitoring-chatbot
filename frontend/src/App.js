@@ -1,6 +1,6 @@
 import React from "react";
-import Dashboard from "./components/Dashboard";
-import Chatbot from "./components/Chatbot";
+import Dashboard from "./features/dashboard/DashboardPage";
+import Chatbot from "./features/chatbot/Chatbot";
 import UploadImage from "./features/vision/UploadImage";
 import './App.css';
 

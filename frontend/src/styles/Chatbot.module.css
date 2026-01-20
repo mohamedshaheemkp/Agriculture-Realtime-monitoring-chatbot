@@ -1,0 +1,115 @@
+/* src/styles/Chatbot.module.css */
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 15px 20px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.statusIndicator {
+    width: 10px;
+    height: 10px;
+    background-color: #4caf50;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.messagesArea {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #f9f9f9;
+}
+
+.messageBubble {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.userMsg {
+    align-self: flex-end;
+    background-color: #2e7d32;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.botMsg {
+    align-self: flex-start;
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 4px;
+}
+
+.inputArea {
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.inputField {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.inputField:focus {
+    border-color: #2e7d32;
+}
+
+.sendButton {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.sendButton:hover {
+    background-color: #1b5e20;
+}
+
+.sendButton:disabled {
+    background-color: #ccc;
+    cursor: default;
+}
+
+.typing {
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 10px;
+}

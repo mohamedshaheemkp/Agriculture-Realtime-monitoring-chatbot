@@ -112,3 +112,7 @@ npm start
 1.  **Live Monitor**: Open the dashboard to see the webcam feed and sensor values updating every 5 seconds.
 2.  **Diagnose**: Go to the "Diagnostic Tool" section, upload a leaf image, and wait for the analysis.
 3.  **Ask for Help**: Type "status report" in the Chatbot to get a full summary of your farm's health based on the latest data.
+
+
+phase 1&2 prompt finished
+phase 3.1 prompting not started
