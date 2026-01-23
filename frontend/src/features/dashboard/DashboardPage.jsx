@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import VideoFeed from '../../../components/VideoFeed'; // We can modernize this later or move it now
-import DetectionLog from '../../../components/DetectionLog'; // Reuse existing logic for now
-import SensorPanel from '../../sensors/SensorPanel';
+import VideoFeed from '../../components/VideoFeed';
+import DetectionLog from '../../components/DetectionLog';
+import SensorPanel from '../sensors/SensorPanel';
 import WeatherWidget from './components/WeatherWidget';
 
 const DashboardPage = () => {

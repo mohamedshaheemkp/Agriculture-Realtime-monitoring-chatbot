@@ -31,3 +31,10 @@ build/
 # Dataset and Runs
 backend/dataset/
 backend/runs/
+backend/agri_models/
+backend/unified_dataset/
+backend/raw_data/
+
+# Models
+*.pt
+*.onnx

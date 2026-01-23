@@ -134,32 +134,90 @@ def process_dataset(source_dirs, output_dir, train_ratio=0.8, val_ratio=0.1):
             
         print(f"Found {len(img_files)} images in {source}")
         
+def fuzzy_match_class(folder_name):
+    """
+    Maps varied folder names (e.g. 'Potato___Early_blight') to strict CLASS_NAMES.
+    Returns: class_id (int) or None
+    """
+    # Normalize folder name
+    clean_name = folder_name.lower().replace('___', '_').replace('__', '_').replace(' ', '_')
+    
+    # Check against known classes
+    for name in CLASS_NAMES:
+        clean_target = name.lower()
+        if clean_target in clean_name or clean_name in clean_target:
+             # Specific Disambiguation
+             if "early_blight" in clean_name and "early_blight" in clean_target and "potato" in clean_name and "potato" in clean_target: return CLASS_MAP[name]
+             if "late_blight" in clean_name and "late_blight" in clean_target and "potato" in clean_name and "potato" in clean_target: return CLASS_MAP[name]
+             if "bacterial" in clean_name and "bacterial" in clean_target: 
+                 if "tomato" in clean_name and "tomato" in clean_target: return CLASS_MAP[name]
+                 if "pepper" in clean_name and "pepper" in clean_target: return CLASS_MAP[name]
+             
+             # Fallback exactish match
+             if clean_name == clean_target:
+                 return CLASS_MAP[name]
+
+    # Heuristic Search (if exact logic above failed)
+    for i, name in enumerate(CLASS_NAMES):
+        # keyword based
+        parts = name.lower().split('_')
+        # match if all parts are in folder name
+        if all(part in clean_name for part in parts):
+            return i
+            
+    return None
+
+def process_dataset(source_dirs, output_dir, train_ratio=0.8, val_ratio=0.1):
+    """
+    Main unification function.
+    """
+    print(f"Initializing Unified Dataset at {output_dir}...")
+    
+    splits = ['train', 'val', 'test']
+    for split in splits:
+        os.makedirs(os.path.join(output_dir, 'images', split), exist_ok=True)
+        os.makedirs(os.path.join(output_dir, 'labels', split), exist_ok=True)
+
+    all_samples = [] # Tuple (img_path, label_path OR class_id)
+
+    # 2. Scan Sources
+    print("Scanning source datasets...")
+    for source in source_dirs:
+        img_files = []
+        for ext in VALID_EXTENSIONS:
+            img_files.extend(glob.glob(os.path.join(source, '**', f'*{ext}'), recursive=True))
+            
+        print(f"Found {len(img_files)} images in {source}")
+        
         for img_path in img_files:
-            # Infer label path (Assumes standard: /images/x.jpg corresponding to /labels/x.txt)
-            # OR same directory.
             path_obj = Path(img_path)
             
-            # Strategy A: Check same folder
-            label_possibilities = [
-                path_obj.with_suffix('.txt'),
-                # Strategy B: Check parallel 'labels' folder
-                Path(str(path_obj).replace('images', 'labels')).with_suffix('.txt')
-            ]
+            # 1. Try finding existing YOLO txt label
+            label_path = path_obj.with_suffix('.txt')
+            if not label_path.exists():
+                # Try parallel folder structure
+                label_path = Path(str(path_obj).replace('images', 'labels')).with_suffix('.txt')
             
-            label_path = None
-            for p in label_possibilities:
-                if p.exists():
-                    label_path = p
-                    break
+            if label_path.exists():
+                all_samples.append({'type': 'det', 'img': str(img_path), 'lbl': str(label_path)})
+                continue
+                
+            # 2. If no label, check for Classification Folder Structure
+            # e.g. .../Potato___Early_blight/image.jpg
+            parent_folder = path_obj.parent.name
+            class_id = fuzzy_match_class(parent_folder)
             
-            if label_path:
-                all_samples.append((str(img_path), str(label_path)))
-            else:
-                # print(f"Warning: No label found for {img_path}. Skipping.")
-                pass
+            if class_id is not None:
+                all_samples.append({'type': 'cls', 'img': str(img_path), 'class_id': class_id})
+            # else:
+            #    print(f"Skipping {parent_folder}/{path_obj.name} (Unknown Class)")
 
     print(f"Total valid samples found: {len(all_samples)}")
     
+    if len(all_samples) == 0:
+        print("ERROR: No valid images found. Check folder names or label files.")
+        return
+
     # 3. Shuffle and Split
     random.seed(42)
     random.shuffle(all_samples)
@@ -180,20 +238,31 @@ def process_dataset(source_dirs, output_dir, train_ratio=0.8, val_ratio=0.1):
     for split, samples in splits_data.items():
         print(f"Processing {split} set ({len(samples)} images)...")
         
-        for img_src, lbl_src in tqdm(samples):
+        for item in tqdm(samples):
+            img_src = item['img']
+            
             # Read Image
             img = cv2.imread(img_src)
             if img is None:
                 continue
-                
             h, w, _ = img.shape
             
-            # Read and Verify Label
-            valid_lines = verify_label(lbl_src, w, h)
+            valid_lines = []
+            
+            if item['type'] == 'det':
+                # Use existing label
+                valid_lines = verify_label(item['lbl'], w, h)
+            else:
+                # Generate Synthetic Label (Center Box)
+                # Class 0.5 0.5 0.9 0.9 (Center x, Center y, Width, Height)
+                # This assumes object covers most of image
+                cid = item['class_id']
+                valid_lines = [f"{cid} 0.500000 0.500000 0.900000 0.900000"]
+
             if not valid_lines:
                 continue
 
-            # Update Class Counts
+            # Update Metadata
             for line in valid_lines:
                 cid = int(line.split()[0])
                 if 0 <= cid < len(CLASS_NAMES):
@@ -201,25 +270,26 @@ def process_dataset(source_dirs, output_dir, train_ratio=0.8, val_ratio=0.1):
 
             # Destination Paths
             filename = os.path.basename(img_src)
+            # Handle duplicates
+            if os.path.exists(os.path.join(output_dir, 'images', split, filename)):
+                filename = f"{random.randint(1000,9999)}_{filename}"
+
             file_root = os.path.splitext(filename)[0]
-            
             dst_img_path = os.path.join(output_dir, 'images', split, filename)
             dst_lbl_path = os.path.join(output_dir, 'labels', split, f"{file_root}.txt")
             
-            # Save Original
+            # Save
             shutil.copy(img_src, dst_img_path)
             with open(dst_lbl_path, 'w') as f:
                 f.write('\n'.join(valid_lines))
 
-            # 5. AUGMENTATION (Train set only, if class is under-represented)
-            # Simple logic: if in train set, add one augmented version
-            if split == 'train':
+            # Augmentation (Train only)
+            if split == 'train' and item['type'] == 'det': # Only augment true detections to preserve quality? 
+                # Actually, augment everything to balance
                  aug_img, aug_lbls = augment_image(img, valid_lines)
-                 
                  aug_filename = f"aug_{filename}"
                  aug_dst_img = os.path.join(output_dir, 'images', split, aug_filename)
-                 aug_dst_lbl = os.path.join(output_dir, 'labels', split, f"aug_{file_root}.txt")
-                 
+                 aug_dst_lbl = os.path.join(output_dir, 'labels', split, f"aug_{os.path.splitext(aug_filename)[0]}.txt")
                  cv2.imwrite(aug_dst_img, aug_img)
                  with open(aug_dst_lbl, 'w') as f:
                      f.write('\n'.join(aug_lbls))

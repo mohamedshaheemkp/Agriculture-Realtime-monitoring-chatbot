@@ -8,8 +8,8 @@ export default function DetectionLog() {
 
   const fetchLogs = async () => {
     try {
-      const response = await axios.get(`${API_URL}/detections/latest?limit=10`);
-      const data = response.data;
+      const response = await axios.get(`${API_URL}/api/v1/vision/history?limit=10`);
+      const data = response.data.data; // Note: Wrapper { success: true, data: [...] }
       setLogs(data);
       if (data.length > 0) {
         setLatestItem(data[0]);
@@ -24,7 +24,7 @@ export default function DetectionLog() {
   const handleReset = async () => {
     if (window.confirm("Are you sure you want to clear all history for this demo?")) {
       try {
-        await axios.post(`${API_URL}/admin/reset`);
+        await axios.post(`${API_URL}/api/v1/admin/reset`);
         fetchLogs(); // refresh immediately
       } catch (e) {
         alert("Failed to reset");
