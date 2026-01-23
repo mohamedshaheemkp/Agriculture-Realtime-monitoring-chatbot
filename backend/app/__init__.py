@@ -29,6 +29,9 @@ def create_app(config_class=Config):
     app.register_blueprint(admin.bp)
     app.register_blueprint(weather.bp)
 
+    from app.api.routes import remedy
+    app.register_blueprint(remedy.bp)
+
     # Legacy / Compatibility Routes (to match old frontend for now if needed, 
     # but strictly we should update frontend. We will provide redirects or direct mapping)
     
