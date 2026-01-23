@@ -5,3 +5,5 @@ ultralytics
 numpy
 python-dotenv
 requests
+tqdm
+PyYAML
