@@ -70,6 +70,15 @@ def prepare_dataset(source_dir, target_dir, split_ratio=0.8):
     print("Dataset preparation complete.")
 
 if __name__ == "__main__":
-    SOURCE = "/Users/anusha/Downloads/DLCPD-25"
-    TARGET = os.path.join(os.path.dirname(__file__), "dataset")
-    prepare_dataset(SOURCE, TARGET)
+    import argparse
+    parser = argparse.ArgumentParser(description="Prepare dataset by splitting into train/val")
+    parser.add_argument("--source", required=True, help="Path to raw source dataset (folders by class)")
+    parser.add_argument("--target", default="dataset", help="Path to output target directory")
+    parser.add_argument("--split", type=float, default=0.8, help="Train split ratio (default: 0.8)")
+    
+    args = parser.parse_args()
+    
+    SOURCE = args.source
+    TARGET = args.target if os.path.isabs(args.target) else os.path.join(os.path.dirname(os.path.abspath(__file__)), args.target)
+    
+    prepare_dataset(SOURCE, TARGET, args.split)
