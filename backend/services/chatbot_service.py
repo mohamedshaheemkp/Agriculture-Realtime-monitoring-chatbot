@@ -1,20 +1,16 @@
 from app.services.storage_service import storage_service
 from app.services.rule_engine import analyze_state
 
-LABEL_MAP = {
-    "Tomato Early blight leaf": "Early Blight",
-    "Tomato mold leaf": "Leaf Mold",
-    "Tomato healthy leaf": "Healthy"
-}
+from app.services.label_normalizer import normalize_label
 
-def call_gpt_api(context, message):
+def call_gpt_api(system_prompt, user_prompt):
     """
     Simulates a call to an external LLM API (e.g., OpenAI).
     In a real deployment, this would use the `openai` library or `requests`.
     """
     # For now, return a placeholder or mock response.
     # We can log the prompt to see what would be sent.
-    print(f"--- GPT PROMPT ---\nContext: {context}\nMessage: {message}\n--------------------")
+    print(f"--- GPT PROMPT ---\nSystem: {system_prompt}\nUser: {user_prompt}\n--------------------")
     return "Analyzing data. Based on current readings, ensure soil moisture remains stable."
 
 def gpt_fallback(message, sensor_data=None, detections=None):
@@ -22,10 +18,30 @@ def gpt_fallback(message, sensor_data=None, detections=None):
     Temporary GPT fallback placeholder.
     Replace body with real LLM call later.
     """
-    return {
-        "reply": f"(GPT FALLBACK PLACEHOLDER) User asked: {message}",
-        "source": "gpt"
-    }
+    sensor_data = sensor_data or {}
+    detections = detections or []
+    normalized_detections = [
+        f"{d.get('label', 'unknown')} ({int(d.get('confidence', 0) * 100)}% confidence)"
+        for d in detections
+    ]
+    detections_text = "\n".join(normalized_detections) if normalized_detections else "None"
+
+    system_prompt = (
+        "You are an expert agricultural advisor helping farmers interpret sensor data "
+        "and crop disease detections. Provide concise, practical, and safe guidance. "
+        "If data is missing, say so explicitly and avoid speculation."
+    )
+    user_prompt = (
+        f"User question: {message}\n\n"
+        "Sensor readings:\n"
+        f"- Temperature: {sensor_data.get('temperature', 'N/A')}°C\n"
+        f"- Humidity: {sensor_data.get('humidity', 'N/A')}%\n"
+        f"- Soil moisture: {sensor_data.get('soil_moisture', 'N/A')}%\n\n"
+        "Recent YOLO detections (normalized):\n"
+        f"{detections_text}\n\n"
+        "Respond with actionable agricultural advice in plain language."
+    )
+    return call_gpt_api(system_prompt, user_prompt)
 
 
 def generate_status(sensors, analysis, summary):
@@ -113,10 +129,10 @@ class ChatbotService:
         
         # Normalize labels
         for d in recent_detections:
-            d['label'] = LABEL_MAP.get(d['label'], d['label'])
+            d['label'] = normalize_label(d['label'])
             
         if summary.get('most_frequent'):
-            summary['most_frequent'] = LABEL_MAP.get(summary['most_frequent'], summary['most_frequent']) 
+            summary['most_frequent'] = normalize_label(summary['most_frequent']) 
         
         # 2. Analyze State (Rule Engine)
         analysis = analyze_state(sensors, recent_detections)

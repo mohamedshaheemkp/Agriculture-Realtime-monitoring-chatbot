@@ -8,6 +8,7 @@ import csv
 import logging
 from app.services.storage_service import storage_service
 from app.core.config import Config
+from app.services.label_normalizer import normalize_label
 
 logger = logging.getLogger(__name__)
 
@@ -145,31 +146,26 @@ class VisionService:
                 except Exception:
                     pass
 
-            for label, conf in found_items:
-                # Format Label
-                parts = label.split('_', 1)
-                if len(parts) > 1:
-                    plant_name = parts[0]
-                    disease_name = parts[1].replace('_', ' ')
-                else:
-                    plant_name = "Unknown"
-                    disease_name = label
+            for raw_label_from_model, conf in found_items:
+                # 1. Normalize the label IMMEDIATELY
+                display_label = normalize_label(raw_label_from_model)
                 
-                display_label = f"{plant_name}: {disease_name}"
+                # 2. Add to detections list (returned to API/Frontend)
                 detections.append({"label": display_label, "confidence": conf})
                 
-                # Log to CSV
+                # 3. Log to CSV (using normalized label)
                 timestamp = time.strftime("%Y-%m-%dT%H:%M:%S")
                 with open(self.log_file_csv, mode='a', newline='') as f:
                     writer = csv.writer(f)
-                    writer.writerow([self.frame_count, timestamp, plant_name, disease_name, f"{conf:.4f}", source])
+                    # We can store the normalized label in the 'Disease' column or split it if preferred.
+                    # For simplicity, we put normalized label in 'Disease' and 'Unknown' in Plant if not parsing.
+                    writer.writerow([self.frame_count, timestamp, "Agri-Plant", display_label, f"{conf:.4f}", source])
                 
-                # Log to DB (Debounced)
+                # 4. Log to DB (Debounced)
                 if self.should_log_db(display_label):
                     storage_service.log_detection(display_label, conf, source)
                     
-                    # Update rolling history (Thread safe copy?)
-                    # Since this is in the loop, we can just append
+                    # Update rolling history
                     self.rolling_history.append({
                         "label": display_label,
                         "confidence": conf,
