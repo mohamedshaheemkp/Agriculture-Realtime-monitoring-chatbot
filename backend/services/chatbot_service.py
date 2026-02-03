@@ -41,29 +41,38 @@ def gpt_fallback(message, sensor_data=None, detections=None):
         f"{detections_text}\n\n"
         "Respond with actionable agricultural advice in plain language."
     )
-    return call_gpt_api(system_prompt, user_prompt)
+    try:
+        return call_gpt_api(system_prompt, user_prompt)
+    except Exception:
+        return "I'm unable to reach the AI service right now. Please try again later."
 
 
 def generate_status(sensors, analysis, summary):
     response = ""
     found_issues = False
     
-    if analysis['alerts']:
-        response += "ATTENTION: " + " ".join(analysis['alerts']) + "\n"
+    alerts = analysis.get('alerts', [])
+    if alerts:
+        response += "ATTENTION: " + " ".join(alerts) + "\n"
         found_issues = True
     
     if sensors:
-        response += f"Temp: {sensors['temperature']}°C, Humidity: {sensors['humidity']}%. "
+        temperature = sensors.get('temperature', 'N/A')
+        humidity = sensors.get('humidity', 'N/A')
+        response += f"Temp: {temperature}°C, Humidity: {humidity}%. "
+    else:
+        response += "Sensor data unavailable. "
         
-    if summary['most_frequent']:
-         response += f"Frequent detection: {summary['most_frequent']} (seen {summary['count']} times in last 5m). "
+    if summary.get('most_frequent'):
+         response += f"Frequent detection: {summary['most_frequent']} (seen {summary.get('count', 0)} times in last 5m). "
     elif not found_issues:
          response += "Conditions look stable."
     return response
 
 def generate_alerts(analysis):
-    if analysis['alerts']:
-        return "ATTENTION: " + " ".join(analysis['alerts'])
+    alerts = analysis.get('alerts', [])
+    if alerts:
+        return "ATTENTION: " + " ".join(alerts)
     return "No active alerts. Conditions seem normal."
 
 def generate_recent_detections(recent_detections):
@@ -88,21 +97,23 @@ def rule_based_response(message, sensors, detections, summary, analysis):
         return generate_recent_detections(detections)
         
     if "advice" in msg or "what should i do" in msg or "help" in msg:
-        if analysis['advice']:
-            return "Recommendations: " + " ".join(analysis['advice'])
+        advice = analysis.get('advice', [])
+        if advice:
+            return "Recommendations: " + " ".join(advice)
         return "Everything looks fine. Keep monitoring soil moisture."
 
     if "how many" in msg or "count" in msg or "times" in msg:
-         if summary['most_frequent']:
-             response = f"In the last 5 minutes, I saw {summary['most_frequent']} {summary['count']} times."
-             if summary['total_detections'] > summary['count']:
-                 response += f" Total detections: {summary['total_detections']}."
+         if summary.get('most_frequent'):
+             response = f"In the last 5 minutes, I saw {summary['most_frequent']} {summary.get('count', 0)} times."
+             if summary.get('total_detections', 0) > summary.get('count', 0):
+                 response += f" Total detections: {summary.get('total_detections', 0)}."
              return response
          return "I haven't detected any diseases or pests in the last 5 minutes."
 
     if "temperature" in msg:
         if sensors:
-             return f"Temperature is currently {sensors['temperature']}°C."
+             temperature = sensors.get('temperature', 'N/A')
+             return f"Temperature is currently {temperature}°C."
         return "No sensor data available right now."
     
     if "monitor" in msg:
@@ -120,22 +131,34 @@ class ChatbotService:
         """
         Generates a response based on the user's message + current system context.
         """
-        message = message.lower()
+        message = str(message or "").lower()
         
         # 1. Fetch Context (Separated from logic: fetched via storage service)
-        sensors = storage_service.get_latest_sensors()
-        recent_detections = storage_service.get_recent_detections(limit=5)
-        summary = storage_service.get_detections_summary(seconds=300) 
+        try:
+            sensors = storage_service.get_latest_sensors()
+            recent_detections = storage_service.get_recent_detections(limit=5) or []
+            summary = storage_service.get_detections_summary(seconds=300) or {}
+        except Exception:
+            return "I'm having trouble accessing sensor data right now. Please try again shortly."
         
         # Normalize labels
         for d in recent_detections:
-            d['label'] = normalize_label(d['label'])
+            try:
+                d['label'] = normalize_label(d.get('label', 'unknown'))
+            except Exception:
+                d['label'] = d.get('label', 'unknown')
             
         if summary.get('most_frequent'):
-            summary['most_frequent'] = normalize_label(summary['most_frequent']) 
+            try:
+                summary['most_frequent'] = normalize_label(summary['most_frequent'])
+            except Exception:
+                summary['most_frequent'] = summary['most_frequent']
         
         # 2. Analyze State (Rule Engine)
-        analysis = analyze_state(sensors, recent_detections)
+        try:
+            analysis = analyze_state(sensors, recent_detections) or {}
+        except Exception:
+            analysis = {}
         
         # 3. Intent Matching & Response Generation
         # Try rule-based first
