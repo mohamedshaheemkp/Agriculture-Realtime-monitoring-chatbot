@@ -1,0 +1,76 @@
+================================================================================
+AGRICULTURE REAL-TIME MONITORING CHATBOT - RUNNING GUIDE
+================================================================================
+
+This guide explains how to run the project on your local machine ("This Device") 
+and how to access it from another device (e.g., a phone or another laptop).
+
+--------------------------------------------------------------------------------
+1. RUNNING ON THIS DEVICE (WINDOWS)
+--------------------------------------------------------------------------------
+
+You need two terminals open: one for the BACKEND and one for the FRONTEND.
+
+### STEP A: START THE BACKEND (Python)
+
+1. Open a terminal (Command Prompt or PowerShell).
+2. Navigate to the backend folder:
+   cd "backend"
+
+3. Activate the virtual environment:
+   .venv\Scripts\activate
+
+   (If you don't have a .venv folder yet, create it with: python -m venv .venv and then install requirements: pip install -r requirements.txt)
+
+4. Run the server:
+   python run.py
+
+   > You should see: "Running on http://0.0.0.0:5050"
+
+### STEP B: START THE FRONTEND (React)
+
+1. Open a NEW terminal window.
+2. Navigate to the frontend folder:
+   cd "frontend"
+
+3. Install dependencies (only needed the first time):
+   npm install
+
+4. Start the React server:
+   npm start
+
+   > This will automatically open http://localhost:3000 in your browser.
+
+--------------------------------------------------------------------------------
+2. RUNNING ON ANOTHER DEVICE (e.g., Mobile Phone)
+--------------------------------------------------------------------------------
+
+To access the app from your phone or another computer on the same Wi-Fi:
+
+1. FIND YOUR LOCAL IP ADDRESS:
+   - Open a terminal and type: ipconfig
+   - Look for "IPv4 Address" under your Wi-Fi adapter (e.g., 192.168.1.15).
+
+2. UPDATE FRONTEND CONFIG:
+   - Open the file: frontend/src/config.js
+   - Change "http://localhost:5050" to your IP address.
+     Example: "http://192.168.1.15:5050"
+   - Save the file. The frontend terminal will automatically reload.
+
+3. ACCESS THE APP:
+   - On your phone's browser, type: http://<YOUR_IP_ADDRESS>:3000
+     Example: http://192.168.1.15:3000
+
+   > Note: Ensure both devices are on the SAME Wi-Fi network.
+
+--------------------------------------------------------------------------------
+3. HOW TO STOP THE RUNNING APPLICATION
+--------------------------------------------------------------------------------
+
+To stop the servers:
+
+1. Click inside the terminal running the process.
+2. Press `Ctrl + C` on your keyboard.
+3. If asked "Terminate batch job (Y/N)?", type Y and press Enter.
+
+Do this for BOTH the backend and frontend terminals.
