@@ -17,32 +17,15 @@ def call_gpt_api(context, message):
     print(f"--- GPT PROMPT ---\nContext: {context}\nMessage: {message}\n--------------------")
     return "Analyzing data. Based on current readings, ensure soil moisture remains stable."
 
-def gpt_fallback(message, sensor_data, detections):
-    context = f"""
-    You are an expert agricultural advisor.
-
-    Current environment:
-    Temperature: {sensor_data.get('temperature', 'N/A')}°C
-    Humidity: {sensor_data.get('humidity', 'N/A')}%
-
-    Recent detections:
-    {detections}
-
-    Provide clear, practical, farmer-friendly advice.
-    
-    FORMATTING RULES:
-    - Short paragraphs
-    - No markdown (no bold, italics, etc.)
-    - No emojis
-    - Practical farming language
-    - No AI disclaimers (do not say 'As an AI')
+def gpt_fallback(message, sensor_data=None, detections=None):
     """
-
-    try:
-        return call_gpt_api(context, message)
-    except Exception as e:
-        print(f"GPT Error: {e}")
-        return "Unable to fetch advice right now. Please try again shortly."
+    Temporary GPT fallback placeholder.
+    Replace body with real LLM call later.
+    """
+    return {
+        "reply": f"(GPT FALLBACK PLACEHOLDER) User asked: {message}",
+        "source": "gpt"
+    }
 
 
 def generate_status(sensors, analysis, summary):
