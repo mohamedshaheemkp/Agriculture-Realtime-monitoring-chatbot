@@ -1,0 +1,281 @@
+Frame,Timestamp,Plant,Disease,Confidence,Source
+9,2026-02-03T14:31:02,Unknown,Tomato mold leaf,0.5672,webcam
+15,2026-02-03T14:31:02,Unknown,Tomato leaf mosaic virus,0.5527,webcam
+19,2026-02-03T14:31:03,Unknown,Tomato leaf mosaic virus,0.5624,webcam
+22,2026-02-03T14:31:03,Unknown,Tomato leaf mosaic virus,0.5921,webcam
+24,2026-02-03T14:31:04,Unknown,Tomato leaf mosaic virus,0.5100,webcam
+25,2026-02-03T14:31:04,Unknown,Tomato leaf mosaic virus,0.5813,webcam
+26,2026-02-03T14:31:04,Unknown,Tomato leaf mosaic virus,0.5914,webcam
+28,2026-02-03T14:31:04,Unknown,Tomato leaf mosaic virus,0.5293,webcam
+32,2026-02-03T14:31:05,Unknown,Tomato leaf bacterial spot,0.5229,webcam
+33,2026-02-03T14:31:05,Unknown,Tomato leaf bacterial spot,0.5194,webcam
+35,2026-02-03T14:31:05,Unknown,Tomato leaf bacterial spot,0.5167,webcam
+37,2026-02-03T14:31:06,Unknown,Tomato leaf bacterial spot,0.5805,webcam
+38,2026-02-03T14:31:06,Unknown,Tomato leaf bacterial spot,0.6259,webcam
+39,2026-02-03T14:31:06,Unknown,Tomato leaf bacterial spot,0.5661,webcam
+46,2026-02-03T14:31:07,Unknown,Tomato leaf bacterial spot,0.5164,webcam
+48,2026-02-03T14:31:07,Unknown,Tomato leaf bacterial spot,0.5237,webcam
+49,2026-02-03T14:31:07,Unknown,Tomato leaf bacterial spot,0.5133,webcam
+51,2026-02-03T14:31:08,Unknown,Tomato leaf bacterial spot,0.5434,webcam
+51,2026-02-03T14:31:08,Unknown,Tomato leaf bacterial spot,0.5136,webcam
+52,2026-02-03T14:31:08,Unknown,Tomato leaf bacterial spot,0.5096,webcam
+54,2026-02-03T14:31:08,Unknown,Tomato leaf bacterial spot,0.5122,webcam
+55,2026-02-03T14:31:08,Unknown,Tomato leaf bacterial spot,0.5784,webcam
+57,2026-02-03T14:31:08,Unknown,Tomato leaf bacterial spot,0.5761,webcam
+58,2026-02-03T14:31:09,Unknown,Tomato leaf bacterial spot,0.5946,webcam
+59,2026-02-03T14:31:09,Unknown,Tomato leaf bacterial spot,0.5886,webcam
+203,2026-02-03T14:31:29,Unknown,Tomato mold leaf,0.5351,webcam
+204,2026-02-03T14:31:29,Unknown,Tomato mold leaf,0.5365,webcam
+209,2026-02-03T14:31:30,Unknown,Tomato mold leaf,0.5092,webcam
+211,2026-02-03T14:31:30,Unknown,Tomato leaf mosaic virus,0.5212,webcam
+213,2026-02-03T14:31:30,Unknown,Tomato leaf mosaic virus,0.5886,webcam
+215,2026-02-03T14:31:31,Unknown,Tomato leaf,0.5775,webcam
+216,2026-02-03T14:31:31,Unknown,Tomato leaf,0.5746,webcam
+217,2026-02-03T14:31:31,Unknown,Tomato leaf,0.8420,webcam
+218,2026-02-03T14:31:31,Unknown,Tomato leaf,0.8582,webcam
+219,2026-02-03T14:31:31,Unknown,Tomato leaf,0.8882,webcam
+220,2026-02-03T14:31:31,Unknown,Tomato leaf,0.5961,webcam
+221,2026-02-03T14:31:31,Unknown,Tomato leaf,0.5992,webcam
+223,2026-02-03T14:31:32,Unknown,Tomato leaf,0.6928,webcam
+224,2026-02-03T14:31:32,Unknown,Tomato leaf,0.7747,webcam
+225,2026-02-03T14:31:32,Unknown,Tomato leaf,0.8467,webcam
+226,2026-02-03T14:31:32,Unknown,Tomato leaf,0.7940,webcam
+227,2026-02-03T14:31:32,Unknown,Tomato leaf,0.7553,webcam
+228,2026-02-03T14:31:32,Unknown,Tomato leaf,0.7902,webcam
+229,2026-02-03T14:31:33,Unknown,Tomato leaf,0.6920,webcam
+230,2026-02-03T14:31:33,Unknown,Tomato leaf,0.7861,webcam
+231,2026-02-03T14:31:33,Unknown,Tomato leaf,0.8408,webcam
+232,2026-02-03T14:31:33,Unknown,Tomato leaf,0.8426,webcam
+233,2026-02-03T14:31:33,Unknown,Tomato leaf,0.8591,webcam
+234,2026-02-03T14:31:33,Unknown,Tomato leaf,0.8574,webcam
+236,2026-02-03T14:31:33,Unknown,Tomato leaf mosaic virus,0.6844,webcam
+237,2026-02-03T14:31:34,Unknown,Tomato leaf,0.6370,webcam
+240,2026-02-03T14:31:34,Unknown,Tomato leaf late blight,0.5658,webcam
+244,2026-02-03T14:31:35,Unknown,Tomato leaf late blight,0.6488,webcam
+245,2026-02-03T14:31:35,Unknown,Tomato leaf late blight,0.5941,webcam
+417,2026-02-03T14:31:59,Unknown,Tomato mold leaf,0.6781,webcam
+420,2026-02-03T14:31:59,Unknown,Tomato Early blight leaf,0.6434,webcam
+423,2026-02-03T14:32:00,Unknown,Tomato Early blight leaf,0.5852,webcam
+424,2026-02-03T14:32:00,Unknown,Tomato Early blight leaf,0.5928,webcam
+428,2026-02-03T14:32:01,Unknown,Tomato Early blight leaf,0.5263,webcam
+429,2026-02-03T14:32:01,Unknown,Tomato Early blight leaf,0.5120,webcam
+430,2026-02-03T14:32:01,Unknown,Tomato Early blight leaf,0.6243,webcam
+431,2026-02-03T14:32:01,Unknown,Tomato Early blight leaf,0.5345,webcam
+432,2026-02-03T14:32:01,Unknown,Tomato mold leaf,0.6691,webcam
+433,2026-02-03T14:32:01,Unknown,Tomato mold leaf,0.6162,webcam
+436,2026-02-03T14:32:02,Unknown,Tomato mold leaf,0.5282,webcam
+437,2026-02-03T14:32:02,Unknown,Tomato mold leaf,0.5800,webcam
+439,2026-02-03T14:32:02,Unknown,Tomato Early blight leaf,0.5127,webcam
+448,2026-02-03T14:32:03,Unknown,Tomato Early blight leaf,0.5525,webcam
+463,2026-02-03T14:32:06,Unknown,Tomato mold leaf,0.5170,webcam
+465,2026-02-03T14:32:06,Unknown,Tomato Early blight leaf,0.5334,webcam
+466,2026-02-03T14:32:06,Unknown,Tomato Early blight leaf,0.5106,webcam
+467,2026-02-03T14:32:06,Unknown,Tomato Early blight leaf,0.5119,webcam
+468,2026-02-03T14:32:06,Unknown,Tomato Early blight leaf,0.5002,webcam
+469,2026-02-03T14:32:06,Unknown,Tomato Early blight leaf,0.5363,webcam
+470,2026-02-03T14:32:07,Unknown,Tomato Early blight leaf,0.5097,webcam
+471,2026-02-03T14:32:07,Unknown,Tomato Early blight leaf,0.5526,webcam
+472,2026-02-03T14:32:07,Unknown,Tomato Early blight leaf,0.5134,webcam
+473,2026-02-03T14:32:07,Unknown,Tomato Early blight leaf,0.5239,webcam
+483,2026-02-03T14:32:08,Unknown,Tomato mold leaf,0.5048,webcam
+550,2026-02-03T14:32:18,Unknown,Tomato leaf,0.5574,webcam
+663,2026-02-03T14:32:34,Unknown,Tomato leaf late blight,0.6649,webcam
+664,2026-02-03T14:32:34,Unknown,Tomato leaf late blight,0.7796,webcam
+665,2026-02-03T14:32:34,Unknown,Tomato leaf late blight,0.6049,webcam
+666,2026-02-03T14:32:34,Unknown,Tomato leaf late blight,0.5193,webcam
+667,2026-02-03T14:32:34,Unknown,Tomato leaf late blight,0.6382,webcam
+668,2026-02-03T14:32:35,Unknown,Tomato leaf late blight,0.6062,webcam
+670,2026-02-03T14:32:35,Unknown,Tomato leaf late blight,0.5923,webcam
+676,2026-02-03T14:32:36,Unknown,Tomato leaf late blight,0.5289,webcam
+727,2026-02-03T14:32:43,Unknown,Tomato leaf late blight,0.5683,webcam
+749,2026-02-03T14:32:46,Unknown,Tomato leaf late blight,0.5090,webcam
+760,2026-02-03T14:32:48,Unknown,Tomato leaf late blight,0.5682,webcam
+810,2026-02-03T14:32:55,Unknown,Tomato leaf late blight,0.5561,webcam
+1193,2026-02-03T14:33:50,Unknown,Tomato leaf late blight,0.5090,webcam
+1351,2026-02-03T14:34:12,Unknown,Tomato leaf late blight,0.5224,webcam
+4049,2026-02-03T14:39:46,Unknown,Tomato leaf late blight,0.5526,webcam
+4061,2026-02-03T14:39:47,Unknown,Tomato leaf late blight,0.6323,webcam
+4258,2026-02-03T14:40:12,Unknown,Tomato leaf late blight,0.6227,webcam
+9926,2026-02-03T14:51:55,Unknown,Tomato leaf late blight,0.5891,webcam
+9952,2026-02-03T14:52:00,Unknown,Tomato leaf late blight,0.5888,webcam
+9953,2026-02-03T14:52:00,Unknown,Tomato leaf late blight,0.6365,webcam
+9956,2026-02-03T14:52:01,Unknown,Tomato leaf late blight,0.5300,webcam
+9957,2026-02-03T14:52:01,Unknown,Tomato leaf late blight,0.6602,webcam
+9958,2026-02-03T14:52:01,Unknown,Tomato leaf late blight,0.7983,webcam
+9959,2026-02-03T14:52:01,Unknown,Tomato leaf late blight,0.6195,webcam
+9974,2026-02-03T14:52:04,Unknown,Tomato leaf late blight,0.6046,webcam
+9978,2026-02-03T14:52:04,Unknown,Tomato leaf late blight,0.5903,webcam
+9996,2026-02-03T14:52:07,Unknown,Tomato leaf late blight,0.5161,webcam
+10075,2026-02-03T14:52:20,Unknown,Tomato leaf late blight,0.5815,webcam
+10108,2026-02-03T14:52:24,Unknown,Tomato leaf late blight,0.7009,webcam
+10110,2026-02-03T14:52:24,Unknown,Tomato leaf late blight,0.5245,webcam
+10131,2026-02-03T14:52:27,Unknown,Tomato leaf late blight,0.5440,webcam
+10209,2026-02-03T14:52:36,Unknown,Tomato leaf late blight,0.5816,webcam
+10221,2026-02-03T14:52:38,Unknown,Tomato Early blight leaf,0.5227,webcam
+10294,2026-02-03T14:52:47,Unknown,Tomato leaf late blight,0.5066,webcam
+10304,2026-02-03T14:52:48,Unknown,Tomato leaf late blight,0.5269,webcam
+10309,2026-02-03T14:52:49,Unknown,Tomato leaf late blight,0.5516,webcam
+10327,2026-02-03T14:52:51,Unknown,Tomato leaf late blight,0.6595,webcam
+10328,2026-02-03T14:52:51,Unknown,Tomato leaf late blight,0.5937,webcam
+10329,2026-02-03T14:52:51,Unknown,Tomato leaf late blight,0.7586,webcam
+10330,2026-02-03T14:52:52,Unknown,Tomato leaf late blight,0.7063,webcam
+10331,2026-02-03T14:52:52,Unknown,Tomato leaf late blight,0.6510,webcam
+10332,2026-02-03T14:52:52,Unknown,Tomato leaf late blight,0.5316,webcam
+10363,2026-02-03T14:52:56,Unknown,Tomato leaf late blight,0.5359,webcam
+10369,2026-02-03T14:52:56,Unknown,Tomato leaf late blight,0.5646,webcam
+10375,2026-02-03T14:52:57,Unknown,Tomato leaf late blight,0.5162,webcam
+10376,2026-02-03T14:52:57,Unknown,Tomato leaf late blight,0.5368,webcam
+10377,2026-02-03T14:52:57,Unknown,Tomato leaf late blight,0.5563,webcam
+10382,2026-02-03T14:52:58,Unknown,Tomato leaf late blight,0.6093,webcam
+10477,2026-02-03T14:53:10,Unknown,Tomato leaf late blight,0.6264,webcam
+10478,2026-02-03T14:53:10,Unknown,Tomato Early blight leaf,0.5288,webcam
+10479,2026-02-03T14:53:10,Unknown,Tomato Early blight leaf,0.5305,webcam
+10487,2026-02-03T14:53:11,Unknown,Tomato Early blight leaf,0.5417,webcam
+10505,2026-02-03T14:53:14,Unknown,Tomato leaf late blight,0.5626,webcam
+10520,2026-02-03T14:53:16,Unknown,Tomato leaf late blight,0.5123,webcam
+10521,2026-02-03T14:53:16,Unknown,Tomato leaf late blight,0.6389,webcam
+10523,2026-02-03T14:53:16,Unknown,Tomato leaf late blight,0.5053,webcam
+10525,2026-02-03T14:53:16,Unknown,Tomato leaf late blight,0.5312,webcam
+10526,2026-02-03T14:53:16,Unknown,Tomato leaf late blight,0.7208,webcam
+10527,2026-02-03T14:53:17,Unknown,Tomato leaf late blight,0.7090,webcam
+10528,2026-02-03T14:53:17,Unknown,Tomato leaf late blight,0.6179,webcam
+10529,2026-02-03T14:53:17,Unknown,Tomato leaf late blight,0.7226,webcam
+10559,2026-02-03T14:53:21,Unknown,Tomato leaf late blight,0.5152,webcam
+10560,2026-02-03T14:53:21,Unknown,Tomato leaf late blight,0.7272,webcam
+10561,2026-02-03T14:53:21,Unknown,Tomato leaf late blight,0.6098,webcam
+10570,2026-02-03T14:53:22,Unknown,Tomato leaf late blight,0.5476,webcam
+10580,2026-02-03T14:53:23,Unknown,Tomato leaf late blight,0.5412,webcam
+10585,2026-02-03T14:53:24,Unknown,Tomato leaf late blight,0.5384,webcam
+10586,2026-02-03T14:53:24,Unknown,Tomato leaf late blight,0.5403,webcam
+10602,2026-02-03T14:53:26,Unknown,Tomato leaf late blight,0.6788,webcam
+10607,2026-02-03T14:53:27,Unknown,Tomato leaf late blight,0.6034,webcam
+10619,2026-02-03T14:53:28,Unknown,Tomato leaf late blight,0.5935,webcam
+10629,2026-02-03T14:53:29,Unknown,Tomato leaf late blight,0.5251,webcam
+10631,2026-02-03T14:53:30,Unknown,Tomato leaf late blight,0.5142,webcam
+10632,2026-02-03T14:53:30,Unknown,Tomato leaf late blight,0.6294,webcam
+10633,2026-02-03T14:53:30,Unknown,Tomato leaf late blight,0.5913,webcam
+10713,2026-02-03T14:53:40,Unknown,Tomato leaf late blight,0.5179,webcam
+10714,2026-02-03T14:53:40,Unknown,Tomato leaf late blight,0.5748,webcam
+10715,2026-02-03T14:53:40,Unknown,Tomato leaf late blight,0.6411,webcam
+10716,2026-02-03T14:53:40,Unknown,Tomato leaf late blight,0.5097,webcam
+10717,2026-02-03T14:53:40,Unknown,Tomato leaf late blight,0.6553,webcam
+10732,2026-02-03T14:53:42,Unknown,Tomato leaf late blight,0.8360,webcam
+10733,2026-02-03T14:53:42,Unknown,Tomato leaf late blight,0.8558,webcam
+10734,2026-02-03T14:53:43,Unknown,Tomato leaf late blight,0.8479,webcam
+10735,2026-02-03T14:53:43,Unknown,Tomato leaf late blight,0.8174,webcam
+10736,2026-02-03T14:53:43,Unknown,Tomato leaf late blight,0.8223,webcam
+10737,2026-02-03T14:53:43,Unknown,Tomato leaf late blight,0.7199,webcam
+10738,2026-02-03T14:53:43,Unknown,Tomato leaf late blight,0.7580,webcam
+10739,2026-02-03T14:53:43,Unknown,Tomato leaf late blight,0.5156,webcam
+10741,2026-02-03T14:53:43,Unknown,Tomato leaf late blight,0.5982,webcam
+10742,2026-02-03T14:53:44,Unknown,Tomato leaf late blight,0.6874,webcam
+10744,2026-02-03T14:53:44,Unknown,Tomato leaf late blight,0.5573,webcam
+10745,2026-02-03T14:53:44,Unknown,Tomato leaf late blight,0.5549,webcam
+10747,2026-02-03T14:53:44,Unknown,Tomato leaf late blight,0.5608,webcam
+10791,2026-02-03T14:53:50,Unknown,Tomato leaf late blight,0.5788,webcam
+10817,2026-02-03T14:53:53,Unknown,Tomato leaf late blight,0.5540,webcam
+10933,2026-02-03T14:54:07,Unknown,Tomato leaf late blight,0.6172,webcam
+10938,2026-02-03T14:54:08,Unknown,Tomato leaf late blight,0.7091,webcam
+10939,2026-02-03T14:54:08,Unknown,Tomato leaf late blight,0.7406,webcam
+10940,2026-02-03T14:54:08,Unknown,Tomato leaf late blight,0.6329,webcam
+10941,2026-02-03T14:54:08,Unknown,Tomato leaf late blight,0.6329,webcam
+10942,2026-02-03T14:54:09,Unknown,Tomato leaf late blight,0.5692,webcam
+10943,2026-02-03T14:54:09,Unknown,Tomato leaf late blight,0.6382,webcam
+10944,2026-02-03T14:54:09,Unknown,Tomato leaf late blight,0.5695,webcam
+10968,2026-02-03T14:54:12,Unknown,Tomato leaf late blight,0.5185,webcam
+10969,2026-02-03T14:54:12,Unknown,Tomato leaf late blight,0.5185,webcam
+11144,2026-02-03T14:54:33,Unknown,Tomato leaf late blight,0.6483,webcam
+11144,2026-02-03T14:54:34,Unknown,Tomato leaf late blight,0.5689,webcam
+11145,2026-02-03T14:54:34,Unknown,Tomato leaf late blight,0.5575,webcam
+11148,2026-02-03T14:54:34,Unknown,Tomato leaf late blight,0.5106,webcam
+11153,2026-02-03T14:54:35,Unknown,Tomato leaf late blight,0.5095,webcam
+11163,2026-02-03T14:54:36,Unknown,Tomato leaf late blight,0.5118,webcam
+11164,2026-02-03T14:54:36,Unknown,Tomato leaf late blight,0.5492,webcam
+11173,2026-02-03T14:54:37,Unknown,Tomato leaf late blight,0.5873,webcam
+11179,2026-02-03T14:54:38,Unknown,Tomato leaf late blight,0.5509,webcam
+11180,2026-02-03T14:54:38,Unknown,Tomato leaf late blight,0.5666,webcam
+11182,2026-02-03T14:54:38,Unknown,Tomato leaf late blight,0.5401,webcam
+11183,2026-02-03T14:54:38,Unknown,Tomato leaf late blight,0.5227,webcam
+11185,2026-02-03T14:54:39,Unknown,Tomato leaf late blight,0.5205,webcam
+11187,2026-02-03T14:54:39,Unknown,Tomato leaf late blight,0.5574,webcam
+11190,2026-02-03T14:54:39,Unknown,Tomato leaf late blight,0.5705,webcam
+11191,2026-02-03T14:54:39,Unknown,Tomato leaf late blight,0.7083,webcam
+11191,2026-02-03T14:54:39,Unknown,Tomato leaf late blight,0.5572,webcam
+11192,2026-02-03T14:54:40,Unknown,Tomato leaf late blight,0.6330,webcam
+11193,2026-02-03T14:54:40,Unknown,Tomato leaf late blight,0.5942,webcam
+11194,2026-02-03T14:54:40,Unknown,Tomato leaf late blight,0.5287,webcam
+11204,2026-02-03T14:54:41,Unknown,Tomato leaf late blight,0.7419,webcam
+11204,2026-02-03T14:54:41,Unknown,Tomato leaf late blight,0.5706,webcam
+11205,2026-02-03T14:54:41,Unknown,Tomato leaf late blight,0.6826,webcam
+11205,2026-02-03T14:54:41,Unknown,Tomato leaf late blight,0.5303,webcam
+11206,2026-02-03T14:54:41,Unknown,Tomato leaf late blight,0.6641,webcam
+11207,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.5912,webcam
+11208,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.5714,webcam
+11209,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.5714,webcam
+11210,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.6379,webcam
+11211,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.6777,webcam
+11212,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.6189,webcam
+11213,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.7071,webcam
+11214,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.7492,webcam
+11215,2026-02-03T14:54:42,Unknown,Tomato leaf late blight,0.6656,webcam
+11373,2026-02-03T14:55:02,Unknown,Tomato leaf late blight,0.5949,webcam
+11390,2026-02-03T14:55:04,Unknown,Tomato leaf late blight,0.5003,webcam
+11396,2026-02-03T14:55:05,Unknown,Tomato leaf late blight,0.7519,webcam
+11397,2026-02-03T14:55:05,Unknown,Tomato leaf late blight,0.6918,webcam
+11398,2026-02-03T14:55:05,Unknown,Tomato leaf late blight,0.7602,webcam
+11424,2026-02-03T14:55:08,Unknown,Tomato leaf late blight,0.5652,webcam
+11425,2026-02-03T14:55:09,Unknown,Tomato leaf late blight,0.5652,webcam
+11426,2026-02-03T14:55:09,Unknown,Tomato leaf late blight,0.5779,webcam
+11432,2026-02-03T14:55:10,Unknown,Tomato leaf late blight,0.5441,webcam
+11433,2026-02-03T14:55:10,Unknown,Tomato leaf late blight,0.5441,webcam
+11665,2026-02-03T14:55:38,Unknown,Tomato leaf late blight,0.6398,webcam
+11670,2026-02-03T14:55:39,Unknown,Tomato leaf late blight,0.6493,webcam
+11671,2026-02-03T14:55:39,Unknown,Tomato leaf late blight,0.6349,webcam
+11672,2026-02-03T14:55:39,Unknown,Tomato leaf late blight,0.6009,webcam
+11689,2026-02-03T14:55:41,Unknown,Tomato leaf late blight,0.5580,webcam
+11691,2026-02-03T14:55:41,Unknown,Tomato leaf late blight,0.5515,webcam
+11715,2026-02-03T14:55:44,Unknown,Tomato leaf late blight,0.5668,webcam
+11716,2026-02-03T14:55:44,Unknown,Tomato leaf late blight,0.5753,webcam
+11802,2026-02-03T14:55:55,Unknown,Tomato Early blight leaf,0.5085,webcam
+11803,2026-02-03T14:55:55,Unknown,Tomato Early blight leaf,0.5238,webcam
+12163,2026-02-03T14:56:40,Unknown,Tomato leaf late blight,0.5350,webcam
+12405,2026-02-03T14:57:10,Unknown,Tomato leaf late blight,0.5008,webcam
+12673,2026-02-03T14:57:44,Unknown,Tomato leaf late blight,0.5165,webcam
+12674,2026-02-03T14:57:44,Unknown,Tomato leaf late blight,0.5721,webcam
+12675,2026-02-03T14:57:44,Unknown,Tomato leaf late blight,0.5148,webcam
+12708,2026-02-03T14:57:48,Unknown,Tomato leaf late blight,0.5073,webcam
+13123,2026-02-03T14:58:41,Unknown,Tomato leaf late blight,0.6243,webcam
+13389,2026-02-03T14:59:19,Unknown,Tomato leaf late blight,0.5228,webcam
+13394,2026-02-03T14:59:20,Unknown,Tomato leaf late blight,0.5831,webcam
+13395,2026-02-03T14:59:20,Unknown,Tomato leaf late blight,0.5831,webcam
+13396,2026-02-03T14:59:20,Unknown,Tomato leaf late blight,0.5866,webcam
+13397,2026-02-03T14:59:20,Unknown,Tomato leaf late blight,0.6873,webcam
+13398,2026-02-03T14:59:20,Unknown,Tomato leaf late blight,0.6438,webcam
+13399,2026-02-03T14:59:20,Unknown,Tomato leaf late blight,0.6824,webcam
+13400,2026-02-03T14:59:21,Unknown,Tomato leaf late blight,0.6283,webcam
+13401,2026-02-03T14:59:21,Unknown,Tomato leaf late blight,0.6389,webcam
+13402,2026-02-03T14:59:21,Unknown,Tomato leaf late blight,0.6539,webcam
+13416,2026-02-03T14:59:23,Unknown,Tomato leaf late blight,0.6239,webcam
+13639,2026-02-03T14:59:50,Unknown,Tomato leaf late blight,0.5031,webcam
+14377,2026-02-03T15:01:17,Unknown,Tomato leaf late blight,0.6954,webcam
+14638,2026-02-03T15:01:46,Unknown,Tomato leaf late blight,0.5870,webcam
+14639,2026-02-03T15:01:47,Unknown,Tomato leaf late blight,0.5050,webcam
+15212,2026-02-03T15:02:50,Unknown,Tomato leaf late blight,0.5119,webcam
+15823,2026-02-03T15:04:03,Unknown,Tomato leaf late blight,0.6070,webcam
+16104,2026-02-03T15:04:24,Unknown,Tomato leaf late blight,0.5251,webcam
+16105,2026-02-03T15:04:24,Unknown,Tomato leaf late blight,0.5251,webcam
+16106,2026-02-03T15:04:24,Unknown,Tomato leaf late blight,0.5269,webcam
+16130,2026-02-03T15:04:25,Unknown,Tomato leaf late blight,0.6203,webcam
+16131,2026-02-03T15:04:25,Unknown,Tomato leaf late blight,0.6189,webcam
+16132,2026-02-03T15:04:25,Unknown,Tomato leaf late blight,0.6189,webcam
+16365,2026-02-03T15:04:36,Unknown,Tomato leaf late blight,0.5829,webcam
+16366,2026-02-03T15:04:36,Unknown,Tomato leaf late blight,0.6309,webcam
+16367,2026-02-03T15:04:37,Unknown,Tomato leaf late blight,0.5364,webcam
+16368,2026-02-03T15:04:37,Unknown,Tomato leaf late blight,0.5364,webcam
+16379,2026-02-03T15:04:37,Unknown,Tomato leaf late blight,0.5483,webcam
+16380,2026-02-03T15:04:37,Unknown,Tomato leaf late blight,0.5483,webcam
+16553,2026-02-03T15:04:46,Unknown,Tomato leaf late blight,0.6026,webcam
+16554,2026-02-03T15:04:46,Unknown,Tomato leaf late blight,0.6026,webcam
+16651,2026-02-03T15:04:52,Unknown,Tomato leaf late blight,0.6984,webcam
+16652,2026-02-03T15:04:52,Unknown,Tomato leaf late blight,0.6984,webcam
+16653,2026-02-03T15:04:52,Unknown,Tomato leaf late blight,0.5041,webcam
