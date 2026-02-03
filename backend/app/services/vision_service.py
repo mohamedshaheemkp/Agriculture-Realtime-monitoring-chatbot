@@ -9,6 +9,7 @@ import logging
 from app.services.storage_service import storage_service
 from app.core.config import Config
 from app.services.label_normalizer import normalize_label
+from app.services.disease_features import get_disease_features
 
 logger = logging.getLogger(__name__)
 
@@ -146,12 +147,22 @@ class VisionService:
                 except Exception:
                     pass
 
+            # Log raw results for debugging
+            logger.info(f"Raw YOLO Results: {found_items}")
+
             for raw_label_from_model, conf in found_items:
                 # 1. Normalize the label IMMEDIATELY
                 display_label = normalize_label(raw_label_from_model)
                 
                 # 2. Add to detections list (returned to API/Frontend)
-                detections.append({"label": display_label, "confidence": conf})
+                # Enrich with disease features
+                features = get_disease_features(display_label)
+                detection_obj = {
+                    "label": display_label,
+                    "confidence": conf,
+                    "features": features
+                }
+                detections.append(detection_obj)
                 
                 # 3. Log to CSV (using normalized label)
                 timestamp = time.strftime("%Y-%m-%dT%H:%M:%S")
@@ -209,8 +220,20 @@ class VisionService:
         valid_detections = []
         if frame is not None:
              _, valid_detections = self.detect_on_frame(frame, source="upload")
-             
-        return valid_detections
+
+        # Task 4 & 6: Construct structured response
+        if not valid_detections:
+            return {"has_disease": False}
+        
+        # Get best detection
+        best_detection = max(valid_detections, key=lambda x: x['confidence'])
+        
+        return {
+            "has_disease": True,
+            "disease": best_detection['label'],
+            "confidence": best_detection['confidence'],
+            "features": best_detection.get('features', [])
+        }
 
     def get_latest_status(self):
         return self.latest_detections_display

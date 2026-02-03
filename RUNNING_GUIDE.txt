@@ -21,7 +21,7 @@ You need two terminals open: one for the BACKEND and one for the FRONTEND.
    .venv\Scripts\activate
 
    (If you don't have a .venv folder yet, create it with: python -m venv .venv and then install requirements: pip install -r requirements.txt)
-
+   if error pops "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process"
 4. Run the server:
    python run.py
 
@@ -41,6 +41,7 @@ You need two terminals open: one for the BACKEND and one for the FRONTEND.
 
    > This will automatically open http://localhost:3000 in your browser.
 
+   if error pops "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process"
 --------------------------------------------------------------------------------
 2. RUNNING ON ANOTHER DEVICE (e.g., Mobile Phone)
 --------------------------------------------------------------------------------
@@ -74,3 +75,4 @@ To stop the servers:
 3. If asked "Terminate batch job (Y/N)?", type Y and press Enter.
 
 Do this for BOTH the backend and frontend terminals.
+for model testing "" python -m ultralytics task=detect mode=val model=runs/detect/train/weights/best.pt data=data.yaml

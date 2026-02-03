@@ -4,3 +4,9 @@ Frame,Timestamp,Plant,Disease,Confidence,Source
 0,2026-01-23T15:56:11,Unknown,Tomato Septoria leaf spot,0.6760,upload
 0,2026-01-23T15:56:11,Unknown,Tomato Septoria leaf spot,0.5504,upload
 0,2026-01-23T15:56:11,Unknown,Tomato Septoria leaf spot,0.5111,upload
+395,2026-02-03T20:24:33,Agri-Plant,Tomato leaf,0.5541,webcam
+396,2026-02-03T20:24:34,Agri-Plant,Tomato leaf,0.5684,webcam
+401,2026-02-03T20:24:34,Agri-Plant,Tomato leaf,0.5633,webcam
+408,2026-02-03T20:24:36,Agri-Plant,Tomato leaf,0.5529,webcam
+409,2026-02-03T20:24:36,Agri-Plant,Tomato leaf,0.5645,webcam
+410,2026-02-03T20:24:36,Agri-Plant,Tomato leaf,0.5348,webcam

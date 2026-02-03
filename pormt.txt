@@ -1,0 +1,5 @@
+
+for chatgpt : 
+Write the exact prompt for weather-aware remedy prediction
+
+🧪 Create evaluation tests for chatbot accuracy

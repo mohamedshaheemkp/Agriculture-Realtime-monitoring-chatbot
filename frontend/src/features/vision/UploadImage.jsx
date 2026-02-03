@@ -26,7 +26,7 @@ const UploadImage = () => {
         setError(null);
         try {
             const data = await visionService.analyzeImage(selectedFile);
-            setResult(data.detections || []);
+            setResult(data);
         } catch (err) {
             setError("Failed to analyze image. Please try again.");
             console.error(err);
@@ -80,15 +80,28 @@ const UploadImage = () => {
 
             {result && (
                 <div className={styles.results}>
-                    <h4>Detection Results:</h4>
-                    {result.length === 0 ? <p>No diseases detected. Plant looks healthy!</p> : (
-                        <div>
-                            {result.map((d, i) => (
-                                <div key={i} className={styles.resultItem}>
-                                    <span>{d.label}</span>
-                                    <span className={styles.confidence}>{(d.confidence * 100).toFixed(1)}%</span>
+                    <h4>Analysis Results:</h4>
+                    {!result.has_disease ? (
+                        <div className={styles.resultItem} style={{ borderLeft: '4px solid green' }}>
+                            <span style={{ fontWeight: 'bold', color: 'green' }}>No diseases detected. Plant looks healthy!</span>
+                        </div>
+                    ) : (
+                        <div className={styles.resultItem} style={{ borderLeft: '4px solid #d32f2f' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                                <span style={{ fontWeight: 'bold', fontSize: '1.1em', color: '#d32f2f' }}>{result.disease}</span>
+                                <span className={styles.confidence}>{(result.confidence * 100).toFixed(1)}% Confidence</span>
+                            </div>
+
+                            {result.features && result.features.length > 0 && (
+                                <div style={{ textAlign: 'left', marginTop: '10px' }}>
+                                    <strong>Identified Symptoms:</strong>
+                                    <ul style={{ margin: '5px 0 0 20px', color: '#444' }}>
+                                        {result.features.map((f, i) => (
+                                            <li key={i}>{f}</li>
+                                        ))}
+                                    </ul>
                                 </div>
-                            ))}
+                            )}
                         </div>
                     )}
                 </div>

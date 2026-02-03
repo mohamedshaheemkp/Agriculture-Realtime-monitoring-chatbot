@@ -130,6 +130,13 @@ class ChatbotService:
     def get_response(self, message):
         """
         Generates a response based on the user's message + current system context.
+        Returns a dictionary:
+        {
+          "reply": str,
+          "source": "rule_based" | "gpt_fallback" | "system_error",
+          "context": dict,
+          "warnings": list
+        }
         """
         message = str(message or "").lower()
         
@@ -139,7 +146,12 @@ class ChatbotService:
             recent_detections = storage_service.get_recent_detections(limit=5) or []
             summary = storage_service.get_detections_summary(seconds=300) or {}
         except Exception:
-            return "I'm having trouble accessing sensor data right now. Please try again shortly."
+            return {
+                "reply": "I'm having trouble accessing sensor data right now. Please try again shortly.",
+                "source": "system_error",
+                "context": {},
+                "warnings": []
+            }
         
         # Normalize labels
         for d in recent_detections:
@@ -164,10 +176,25 @@ class ChatbotService:
         # Try rule-based first
         rule_response = rule_based_response(message, sensors, recent_detections, summary, analysis)
         
+        response_data = {
+            "reply": "",
+            "source": "rule_based",
+            "context": {
+                # Inferred opportunistically from available data
+                "has_sensor_data": bool(sensors),
+                "has_detections": bool(recent_detections)
+            },
+            "warnings": analysis.get('alerts', [])
+        }
+
         if rule_response:
-             return rule_response
+             response_data["reply"] = rule_response
+             return response_data
 
         # 4. Fallback to GPT
-        return gpt_fallback(message, sensors, recent_detections)
+        gpt_reply = gpt_fallback(message, sensors, recent_detections)
+        response_data["reply"] = gpt_reply
+        response_data["source"] = "gpt_fallback"
+        return response_data
 
 chatbot_service = ChatbotService()

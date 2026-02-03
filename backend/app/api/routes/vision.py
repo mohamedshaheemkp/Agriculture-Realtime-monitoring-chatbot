@@ -15,12 +15,10 @@ def analyze_image():
         return jsonify({"success": False, "error": "No file selected"}), 400
         
     try:
-        detections = vision_service.predict_image_file(file)
+        result = vision_service.predict_image_file(file)
         return jsonify({
             "success": True,
-            "data": {
-                "detections": detections
-            }
+            "data": result
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
